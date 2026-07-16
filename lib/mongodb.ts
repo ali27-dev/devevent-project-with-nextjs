@@ -8,14 +8,12 @@ type MongooseCache = {
 
 // Extend the global object to include our mongoose cache
 declare global {
-  // eslint-disable-next-line no-var
   var mongoose: MongooseCache | undefined;
 }
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
+const MONGODB_URL = process.env.MONGODB_URL;
 // Initialize the cache on the global object to persist across hot reloads in development
-let cached: MongooseCache = global.mongoose || { conn: null, promise: null };
+const cached: MongooseCache = global.mongoose || { conn: null, promise: null };
 
 if (!global.mongoose) {
   global.mongoose = cached;
@@ -35,9 +33,9 @@ async function connectDB(): Promise<typeof mongoose> {
   // Return existing connection promise if one is in progress
   if (!cached.promise) {
     // Validate MongoDB URI exists
-    if (!MONGODB_URI) {
+    if (!MONGODB_URL) {
       throw new Error(
-        "Please define the MONGODB_URI environment variable inside .env.local"
+        "Please define the MONGODB_URL environment variable inside .env.local"
       );
     }
     const options = {
@@ -46,7 +44,7 @@ async function connectDB(): Promise<typeof mongoose> {
 
     // Create a new connection promise
     cached.promise = mongoose
-      .connect(MONGODB_URI!, options)
+      .connect(MONGODB_URL!, options)
       .then((mongoose) => {
         return mongoose;
       });

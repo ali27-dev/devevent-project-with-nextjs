@@ -1,13 +1,18 @@
 import React from "react";
 import ExploreBtn from "./components/ExploreBtn";
 import EventCard from "./components/EventCard";
-import events from "@/lib/constants";
+import { IEvent } from "@/database";
 
-function page() {
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const Page = async () => {
+  const response = await fetch(`${BASE_URL}/api/events`);
+  const { events } = await response.json();
+
   return (
     <section>
       <h1 className="text-center">
-        The Hub for Every Dev <br /> Event You Can't Miss
+        The Hub for Every Dev <br /> Event You Can&apos;t Miss
       </h1>
       <p className="text-center mt-5">
         Hackathones, Meetsup, and Conferences, All in One Place
@@ -18,15 +23,17 @@ function page() {
         <h3>Feature Events</h3>
 
         <ul className="events">
-          {events.map((event) => (
-            <li key={event.title} className="list-none">
-              <EventCard {...event} />
-            </li>
-          ))}
+          {events &&
+            events.length > 0 &&
+            events.map((event: IEvent) => (
+              <li key={event.title} className="list-none">
+                <EventCard {...event} />
+              </li>
+            ))}
         </ul>
       </div>
     </section>
   );
-}
+};
 
-export default page;
+export default Page;
