@@ -61,6 +61,7 @@ async function EventDetailsPage({
   const { slug } = await params;
 
   const request = await fetch(`${BASE_URL}/api/events/${slug}`);
+
   const {
     event: {
       description,

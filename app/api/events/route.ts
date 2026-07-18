@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import type { UploadApiResponse } from "cloudinary";
-
 import connectDB from "@/lib/mongodb";
 import Event from "@/database/event.model";
 
@@ -99,26 +98,28 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream(
-          { resource_type: "image", folder: "DevEvent" },
-          (error, result) => {
-            if (error) {
-              reject(error);
-              return;
-            }
+    const uploadResult = await new Promise<UploadApiResponse>(
+      (resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            { resource_type: "image", folder: "DevEvent" },
+            (error, result) => {
+              if (error) {
+                reject(error);
+                return;
+              }
 
-            if (!result?.secure_url) {
-              reject(new Error("Cloudinary did not return an image URL"));
-              return;
-            }
+              if (!result?.secure_url) {
+                reject(new Error("Cloudinary did not return an image URL"));
+                return;
+              }
 
-            resolve(result);
-          }
-        )
-        .end(buffer);
-    });
+              resolve(result);
+            }
+          )
+          .end(buffer);
+      }
+    );
 
     event.image = uploadResult.secure_url;
 
