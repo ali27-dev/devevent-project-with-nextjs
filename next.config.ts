@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+<<<<<<< Updated upstream
   cacheComponents: true,
 
+=======
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  cacheComponents: true,
+>>>>>>> Stashed changes
   images: {
     remotePatterns: [
       {

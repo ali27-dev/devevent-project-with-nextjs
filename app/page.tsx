@@ -2,7 +2,11 @@ import React from "react";
 import ExploreBtn from "./components/ExploreBtn";
 import EventCard from "./components/EventCard";
 import { IEvent } from "@/database";
+<<<<<<< Updated upstream
 import { cacheLife } from "next/cache";
+=======
+// import events from "@/lib/constants";
+>>>>>>> Stashed changes
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
